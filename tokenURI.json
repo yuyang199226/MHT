@@ -1,0 +1,9 @@
+{
+    "name": "My NFT",
+    "description": "This is an example NFT",
+    "image": "https://pbs.twimg.com/media/GLf7bKAXQAAx-kf?format=jpg&name=medium",
+    "attributes": {
+        "color": "blue",
+        "rarity": "legendary"
+    }
+}
