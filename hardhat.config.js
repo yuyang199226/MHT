@@ -65,7 +65,7 @@ task("balance", "Prints an account's balance")
   });
 
 
-  task("contract", "Prints an account's balance")
+task("contract", "Prints an account's balance")
   //.addParam("address", "The account's address")
   .setAction(async (taskArgs, hre) => {
     const contractName = 'Token.sol';
@@ -100,9 +100,40 @@ task("balance", "Prints an account's balance")
   } catch (error) {
       console.error('Error calling contract method:', error);
   }
+});
+
+
+//https://raw.githubusercontent.com/yuyang199226/MHT/main/tokenURI.json
+
+
+task("nft", "create nft")
+//.addParam("address", "The account's address")
+.setAction(async (taskArgs, hre) => {
+  const contractName = 'FrogNFT.sol';
+  const contractJSONPath = path.join(__dirname, 'artifacts', 'contracts', contractName, 'FrogNFT.json');
+  
+  // 读取合约 JSON 文件
+  const contractJSON = JSON.parse(fs.readFileSync(contractJSONPath, 'utf-8'));
+  
+  // 获取合约 ABI
+  const contractABI = contractJSON.abi;
+  
+  // console.log('Contract ABI:', contractABI);
 
 
 
+  const provider = new hre.ethers.getDefaultProvider('sepolia', {infura: INFURA_API_KEY});
+  // const contract = new hre.ethers.Contract(contractAddress, contractABI, provider);
+  try {
+
+    const nftContractAddress = "0x30d451990d8560ae2072ee4ec41ea510a05706ed"
+    const wallet = new ethers.Wallet(process.env.SEPOLIA_PRIVATE_KEY, provider); 
+    const contract = new hre.ethers.Contract(nftContractAddress, contractABI, wallet);
+    const tokenId = await contract.createNFTs("https://raw.githubusercontent.com/yuyang199226/MHT/main/tokenURI.json");
+    console.log("balance: ", tokenId);
+} catch (error) {
+    console.error('Error calling contract method:', error);
+}
 
 
   });
